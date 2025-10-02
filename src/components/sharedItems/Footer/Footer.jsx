@@ -1,0 +1,120 @@
+import React from "react";
+import { Link } from "react-router";
+import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-900 text-gray-300 pt-10">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+        {/* Logo + Description */}
+        <div>
+          <h2 className="text-2xl font-bold text-red-700 mb-3">
+            Elmul Furqaan
+          </h2>
+          <p className="text-sm leading-relaxed">
+            Dedicated to spreading knowledge and values. Learn, grow, and stay
+            connected with our latest blogs, videos, and resources.
+          </p>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/" className="hover:text-red-700">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/blogs" className="hover:text-red-700">
+                Blogs
+              </Link>
+            </li>
+            <li>
+              <Link to="/videos" className="hover:text-red-700">
+                Videos
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-red-700">
+                About Us
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Contact + Social */}
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-3">Contact Us</h3>
+          <p className="text-sm">Email: info@elmulfurqaan.com</p>
+          <p className="text-sm mb-3">Phone: +880 1234-567890</p>
+          <div className="flex space-x-4 mt-2">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-red-700"
+            >
+              <Facebook size={20} />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-red-700"
+            >
+              <Twitter size={20} />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-red-700"
+            >
+              <Instagram size={20} />
+            </a>
+            <a
+              href="mailto:info@elmulfurqaan.com"
+              className="hover:text-red-700"
+            >
+              <Mail size={20} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom */}
+      <div className="mt-10 border-t border-gray-700 py-4 text-center flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto text-sm text-gray-400 px-4">
+        {/* Left Side */}
+        <p>© {new Date().getFullYear()} <span className="font-bold text-white">Elmul Furqaan</span>. All Rights Reserved.</p>
+
+        {/* Right Side */}
+        <p>
+          Developed By{" "}
+          <a
+            href="https://moshiurrahman.online"
+            target="_blank"
+            rel="noreferrer"
+            className="text-red-600 hover:text-red-700 font-medium relative group"
+          >
+            Moshiur Rahman
+            <span className="absolute left-0 -bottom-0.5 w-0 h-0.5 bg-red-700 transition-all group-hover:w-full"></span>
+          </a>{" "}
+          via{" "}
+          <a
+            href="https://projuktisheba.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-red-600 hover:text-red-700 font-medium relative group"
+          >
+            Projukti Sheba
+            <span className="absolute left-0 -bottom-0.5 w-0 h-0.5 bg-red-700 transition-all group-hover:w-full"></span>
+          </a>
+        </p>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
