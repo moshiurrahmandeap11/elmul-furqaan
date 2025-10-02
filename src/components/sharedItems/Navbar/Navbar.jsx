@@ -21,6 +21,7 @@ const Navbar = () => {
               { path: "/blogs", label: "Blogs" },
               { path: "/videos", label: "Videos" },
               { path: "/about", label: "About Us" },
+              { path: "/questions", label: "QNA" },
             ].map((item, idx) => (
               <NavLink
                 key={idx}
