@@ -8,6 +8,7 @@ import ContactUs from "../../pages/ContactUs/ContactUs";
 import QNA from "../../pages/Home/QNA/QNA";
 import DashboardLayout from "../../layouts/MainLayout/DashboardLayout/DashboardLayout";
 import Dashboard from "../../pages/Dashboard/Dashboard";
+import AddBlog from "../../pages/Dashboard/BlogsAdmin/AddBlog/AddBlog";
 
 
 export const router = createBrowserRouter([
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard></Dashboard>
+      },
+      {
+        path: "/add-blogs",
+        element: <AddBlog></AddBlog>
       }
     ]
   }

@@ -16,6 +16,7 @@ import {
 import SystemSettings from "./SystemSettings/SystemSettings";
 import BannerAdmin from "./HomeAdmin/BannerAdmin/BannerAdmin";
 import BannerTextAdmin from "./HomeAdmin/BannerAdmin/BannerTextAdmin/BannerTextAdmin";
+import BlogsAdmin from "./BlogsAdmin/BlogsAdmin";
 
 // ---------------- Pages ----------------
 const HomePage = () => (
@@ -83,7 +84,7 @@ const menuItems = [
       { id: "banner-text", label: "Banner Text", component: BannerTextPage },
     ],
   },
-  { id: "blogs", label: "Blogs", icon: FileText, component: BlogsPage },
+  { id: "blogs", label: "Blogs", icon: FileText, component: BlogsAdmin },
   { id: "videos", label: "Videos", icon: Video, component: VideosPage },
   { id: "about", label: "About Us", icon: Info, component: AboutPage },
   { id: "qna", label: "QNA", icon: MessageCircle, component: QNAPage },
