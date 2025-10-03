@@ -1,16 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import axiosInstance from "../../../hooks/axiosIntance/AxiosIntance";
+
 
 const Footer = () => {
+  const [logo, setLogo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLogo();
+  }, []);
+
+  const fetchLogo = async () => {
+    try {
+      const res = await axiosInstance.get("/logo");
+      setLogo(res.data);
+    } catch (error) {
+      console.error("Error fetching logo:", error);
+      // Fallback to default logo if API fails
+      setLogo({ type: 'text', text: 'Elmul Furqaan' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderLogo = () => {
+    if (loading) {
+      return <div className="h-8 w-32 bg-gray-700 animate-pulse rounded"></div>;
+    }
+
+    if (!logo) {
+      return <span className="text-2xl font-bold text-red-700">Elmul Furqaan</span>;
+    }
+
+    if (logo.type === 'text') {
+      return <span className="text-2xl font-bold text-red-700">{logo.text}</span>;
+    }
+
+    if (logo.type === 'image') {
+      return (
+        <img 
+          src={logo.url} 
+          alt="Logo" 
+          className="h-10 w-auto object-contain"
+        />
+      );
+    }
+
+    return <span className="text-2xl font-bold text-red-700">Elmul Furqaan</span>;
+  };
+
   return (
     <footer className="bg-gray-900 text-gray-300 pt-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
         {/* Logo + Description */}
         <div>
-          <h2 className="text-2xl font-bold text-red-700 mb-3">
-            Elmul Furqaan
-          </h2>
+          <div className="mb-3">
+            {renderLogo()}
+          </div>
           <p className="text-sm leading-relaxed">
             Dedicated to spreading knowledge and values. Learn, grow, and stay
             connected with our latest blogs, videos, and resources.
