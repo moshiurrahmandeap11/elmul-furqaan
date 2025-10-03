@@ -1,17 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router";
 import { Menu, X } from "lucide-react";
+import axiosInstance from "../../../hooks/axiosIntance/AxiosIntance";
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [logo, setLogo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLogo();
+  }, []);
+
+  const fetchLogo = async () => {
+    try {
+      const res = await axiosInstance.get("/logo");
+      setLogo(res.data);
+    } catch (error) {
+      console.error("Error fetching logo:", error);
+      // Fallback to default logo if API fails
+      setLogo({ type: 'text', text: 'Elmul Furqaan' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderLogo = () => {
+    if (loading) {
+      return <div className="h-8 w-32 bg-gray-200 animate-pulse rounded"></div>;
+    }
+
+    if (!logo) {
+      return <span className="text-2xl font-bold text-red-700">Elmul Furqaan</span>;
+    }
+
+    if (logo.type === 'text') {
+      return <span className="text-2xl font-bold text-red-700">{logo.text}</span>;
+    }
+
+    if (logo.type === 'image') {
+      return (
+        <img 
+          src={logo.url} 
+          alt="Logo" 
+          className="h-10 w-auto object-contain"
+        />
+      );
+    }
+
+    return <span className="text-2xl font-bold text-red-700">Elmul Furqaan</span>;
+  };
 
   return (
     <nav className="shadow-md bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-red-700">
-            Elmul Furqaan
+          <Link to="/" className="flex items-center">
+            {renderLogo()}
           </Link>
 
           {/* Desktop Menu */}

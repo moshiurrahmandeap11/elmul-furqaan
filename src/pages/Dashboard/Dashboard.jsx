@@ -7,10 +7,20 @@ import {
   MessageCircle,
   Menu,
   X,
+  Settings,
 } from "lucide-react";
 import HomeAdmin from "./HomeAdmin/HomeAdmin";
+import NavbarAdmin from "./NavbarAdmin/NavbarAdmin";
+import SystemSettings from "./SystemSettings/SystemSettings";
 
 // Page Components
+
+const NavbarPage = () => (
+  <div>
+    <NavbarAdmin></NavbarAdmin>
+  </div>
+)
+
 const HomePage = () => (
   <div className="p-4">
     <HomeAdmin></HomeAdmin>
@@ -45,16 +55,24 @@ const QNAPage = () => (
   </div>
 );
 
+const SystemSettingsPage = () => (
+  <div>
+    <SystemSettings />
+  </div>
+)
+
 const Dashboard = () => {
   const [activePage, setActivePage] = useState("home");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const menuItems = [
+    {id: "navbar", label: "Navbar", icon: Home, component: NavbarPage },
     { id: "home", label: "Home", icon: Home, component: HomePage },
     { id: "blogs", label: "Blogs", icon: FileText, component: BlogsPage },
     { id: "videos", label: "Videos", icon: Video, component: VideosPage },
     { id: "about", label: "About Us", icon: Info, component: AboutPage },
     { id: "qna", label: "QNA", icon: MessageCircle, component: QNAPage },
+    { id: "system-settings", label: "System Settings", icon: Settings, component: SystemSettingsPage },
   ];
 
   const ActiveComponent =
