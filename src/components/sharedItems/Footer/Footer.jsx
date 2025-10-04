@@ -99,7 +99,7 @@ const Footer = () => {
           <p className="text-sm mb-3">Phone: +966 50 373 9142</p>
           <div className="flex space-x-4 mt-2">
             <a
-              href="https://facebook.com"
+              href="https://facebook.com/elmulforqaan"
               target="_blank"
               rel="noreferrer"
               className="hover:text-red-700"
