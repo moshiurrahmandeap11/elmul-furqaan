@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import Swal from "sweetalert2";
 import axiosInstance from '../../../../hooks/axiosIntance/AxiosIntance';
 
-const AddBlog = () => {
+const EditBlogs = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
@@ -12,9 +13,41 @@ const AddBlog = () => {
     thumbnail: "",
     tags: ""
   });
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null); // Current thumbnail URL
+  const [imagePreview, setImagePreview] = useState(null); // New image preview
+  const [isLoading, setIsLoading] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+
+  // Fetch existing blog data
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        setIsLoading(true);
+        const res = await axiosInstance.get(`/blogs/${id}`);
+        const blog = res.data;
+        setFormData({
+          title: blog.title || "",
+          description: blog.description || "",
+          thumbnail: blog.thumbnail || "",
+          tags: blog.tags ? blog.tags.join(', ') : ""
+        });
+        setCurrentImage(blog.thumbnail || null);
+      } catch (err) {
+        console.error("Error fetching blog:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to load blog data.",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (id) {
+      fetchBlog();
+    }
+  }, [id]);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -28,7 +61,7 @@ const AddBlog = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Preview
+      // Preview new image
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -75,7 +108,7 @@ const AddBlog = () => {
     return errors;
   };
 
-  // Handle form submission
+  // Handle form submission (Update)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
@@ -89,7 +122,7 @@ const AddBlog = () => {
       return;
     }
 
-    setIsLoading(true);
+    setSubmitLoading(true);
     try {
       let thumbnailUrl = formData.thumbnail;
       if (formData.imageFile) {
@@ -105,83 +138,105 @@ const AddBlog = () => {
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
       };
 
-      // Post to backend
-      await axiosInstance.post("/blogs", blogData);
+      // Update via backend (PUT)
+      await axiosInstance.put(`/blogs/${id}`, blogData);
 
       // Success
       Swal.fire({
         icon: "success",
         title: "Success!",
-        text: "Blog added successfully!",
+        text: "Blog updated successfully!",
+        timer: 2000,
+        showConfirmButton: false
+      }).then(() => {
+        navigate('/blogs'); // Redirect to blogs list after success
       });
-
-      // Reset form
-      setFormData({
-        title: "",
-        description: "",
-        thumbnail: "",
-        tags: ""
-      });
-      setImagePreview(null);
-      setFormErrors({});
-      document.getElementById('imageInput').value = ''; // Clear file input
 
     } catch (err) {
-      console.error("Error adding blog:", err);
+      console.error("Error updating blog:", err);
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to add blog. Please try again.",
+        text: "Failed to update blog. Please try again.",
       });
     } finally {
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
   };
 
-  // Handle back to dashboard
+  // Handle back to blogs list
   const handleBack = () => {
-    navigate(-1); // Adjust route as needed
+    navigate(-1);
   };
+
+  if (isLoading) {
+    return (
+      <div className="p-4 sm:p-6 max-w-4xl mx-auto min-h-screen">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-700"></div>
+          <span className="ml-3 text-lg">Loading blog...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6 max-w-4xl mx-auto min-h-screen">
+      {/* Header with Back Button */}
       <div className="flex items-center justify-between mb-8">
         <button
           onClick={handleBack}
-          className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
+          className="flex items-center px-4 py-2 text-gray-600 hover:text-red-700 hover:bg-gray-100 rounded-lg transition"
         >
           <ChevronLeft className="h-5 w-5 mr-2" />
-          Back to Dashboard
+          Back to Blogs
         </button>
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center flex-1">
-          Add New Blog
+        <h2 className="text-3xl font-extrabold text-gray-900">
+          Edit Blog
         </h2>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg space-y-6">
         {/* Thumbnail Image */}
         <div>
-          <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Thumbnail Image <span className="text-red-500">*</span>
           </label>
-          <input
-            type="file"
-            id="imageInput"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Current Image */}
+            {currentImage && (
+              <div className="flex-shrink-0">
+                <p className="text-sm text-gray-600 mb-2">Current Image:</p>
+                <img
+                  src={currentImage}
+                  alt="Current thumbnail"
+                  className="w-48 h-32 object-cover rounded-lg shadow-md"
+                />
+              </div>
+            )}
+            {/* New Image Upload */}
+            <div className="flex-1">
+              <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+              {imagePreview && (
+                <div className="mt-4">
+                  <p className="text-sm text-gray-600 mb-2">New Image Preview:</p>
+                  <img
+                    src={imagePreview}
+                    alt="New preview"
+                    className="w-48 h-32 object-cover rounded-lg shadow-md"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
           {formErrors.thumbnail && (
             <p className="mt-1 text-sm text-red-500">{formErrors.thumbnail}</p>
-          )}
-          {imagePreview && (
-            <div className="mt-4">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-48 h-32 object-cover rounded-lg shadow-md"
-              />
-            </div>
           )}
         </div>
 
@@ -254,10 +309,10 @@ const AddBlog = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={submitLoading}
           className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:bg-blue-400"
         >
-          {isLoading ? (
+          {submitLoading ? (
             <span className="flex items-center justify-center">
               <svg
                 className="animate-spin h-5 w-5 mr-2 text-white"
@@ -279,10 +334,10 @@ const AddBlog = () => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              Adding Blog...
+              Updating Blog...
             </span>
           ) : (
-            "Add Blog"
+            "Update Blog"
           )}
         </button>
       </form>
@@ -290,4 +345,4 @@ const AddBlog = () => {
   );
 };
 
-export default AddBlog;
+export default EditBlogs;

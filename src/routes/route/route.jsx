@@ -9,6 +9,8 @@ import QNA from "../../pages/Home/QNA/QNA";
 import DashboardLayout from "../../layouts/MainLayout/DashboardLayout/DashboardLayout";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import AddBlog from "../../pages/Dashboard/BlogsAdmin/AddBlog/AddBlog";
+import BlogsDetails from "../../pages/Blogs/BlogsDetails/BlogsDetails";
+import EditBlogs from "../../pages/Dashboard/BlogsAdmin/EditBlogs/EditBlogs";
 
 
 export const router = createBrowserRouter([
@@ -23,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs></Blogs>
+      },
+      {
+        path: "/blogs/:id",
+        element: <BlogsDetails></BlogsDetails>
       },
       {
         path: "/videos",
@@ -53,6 +59,10 @@ export const router = createBrowserRouter([
       {
         path: "/add-blogs",
         element: <AddBlog></AddBlog>
+      },
+      {
+        path: "/edit-blogs/:id",
+        element: <EditBlogs></EditBlogs>
       }
     ]
   }
