@@ -182,13 +182,10 @@ const Dashboard = () => {
     );
   };
 
-  const handleLogout = () => {
-    // Clear saved states on logout
-    localStorage.removeItem('dashboardActivePage');
-    localStorage.removeItem('dashboardSidebarOpen');
-    localStorage.removeItem('dashboardExpandedMenus');
-    // Add your logout logic here
-  };
+const handleLogout = () => {
+  localStorage.removeItem('adminAuth');
+  window.location.href = '/dashboard'; // This will trigger login screen
+};
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -282,13 +279,13 @@ const Dashboard = () => {
                 <p className="text-xs text-gray-500">admin@example.com</p>
               </div>
             </div>
-            <button 
-              onClick={handleLogout}
-              className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-            >
-              <LogOut size={16} />
-              <span>Logout</span>
-            </button>
+<button 
+  onClick={handleLogout}
+  className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+>
+  <LogOut size={16} />
+  <span>Logout</span>
+</button>
           </div>
         )}
       </aside>

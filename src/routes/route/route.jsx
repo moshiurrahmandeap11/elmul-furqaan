@@ -13,6 +13,7 @@ import BlogsDetails from "../../pages/Blogs/BlogsDetails/BlogsDetails";
 import EditBlogs from "../../pages/Dashboard/BlogsAdmin/EditBlogs/EditBlogs";
 import AddVideos from "../../pages/Dashboard/VideosAdmin/AddVideos/AddVideos";
 import EditVideos from "../../pages/Dashboard/VideosAdmin/EditVideos/EditVideos";
+import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 
 
 export const router = createBrowserRouter([
@@ -52,7 +53,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <DashboardLayout></DashboardLayout>,
+    element: <ProtectedRoute><DashboardLayout></DashboardLayout></ProtectedRoute>,
     children: [
       {
         path: "/dashboard",
