@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api", 
+  baseURL: "https://elmul-furqaan-server.onrender.com/api", 
   headers: {
     "Content-Type": "application/json",
   },
