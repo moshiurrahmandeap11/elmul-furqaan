@@ -17,6 +17,7 @@ import SystemSettings from "./SystemSettings/SystemSettings";
 import BannerAdmin from "./HomeAdmin/BannerAdmin/BannerAdmin";
 import BannerTextAdmin from "./HomeAdmin/BannerAdmin/BannerTextAdmin/BannerTextAdmin";
 import BlogsAdmin from "./BlogsAdmin/BlogsAdmin";
+import VideosAdmin from "./VideosAdmin/VideosAdmin";
 
 // ---------------- Pages ----------------
 const HomePage = () => (
@@ -47,8 +48,7 @@ const BlogsPage = () => (
 
 const VideosPage = () => (
   <div className="p-8">
-    <h1 className="text-3xl font-bold mb-4">Videos</h1>
-    <p className="text-gray-600">Upload and manage videos.</p>
+    <VideosAdmin></VideosAdmin>
   </div>
 );
 

@@ -11,6 +11,8 @@ import Dashboard from "../../pages/Dashboard/Dashboard";
 import AddBlog from "../../pages/Dashboard/BlogsAdmin/AddBlog/AddBlog";
 import BlogsDetails from "../../pages/Blogs/BlogsDetails/BlogsDetails";
 import EditBlogs from "../../pages/Dashboard/BlogsAdmin/EditBlogs/EditBlogs";
+import AddVideos from "../../pages/Dashboard/VideosAdmin/AddVideos/AddVideos";
+import EditVideos from "../../pages/Dashboard/VideosAdmin/EditVideos/EditVideos";
 
 
 export const router = createBrowserRouter([
@@ -63,6 +65,14 @@ export const router = createBrowserRouter([
       {
         path: "/edit-blogs/:id",
         element: <EditBlogs></EditBlogs>
+      },
+      {
+        path: "/add-video",
+        element: <AddVideos></AddVideos>
+      },
+      {
+        path: "/edit-video/:id",
+        element: <EditVideos></EditVideos>
       }
     ]
   }
