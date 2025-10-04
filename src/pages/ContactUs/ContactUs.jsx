@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axiosInstance from "../../hooks/axiosIntance/AxiosIntance";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -7,20 +8,41 @@ const ContactUs = () => {
     subject: "",
     message: "",
   });
-  const [success, setSuccess] = useState("");
+  const [status, setStatus] = useState({ success: "", error: "", loading: false });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
 
-    // Dummy submit action
-    setSuccess("Your message has been sent successfully!");
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setSuccess(""), 5000);
+    // simple validation
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus({ success: "", error: "Please fill in all required fields", loading: false });
+      return;
+    }
+
+    try {
+      setStatus({ success: "", error: "", loading: true });
+      const res = await axiosInstance.post("/contact", formData);
+
+      if (res.status === 201) {
+        setStatus({
+          success: "Your message has been sent successfully!",
+          error: "",
+          loading: false,
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      }
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      setStatus({
+        success: "",
+        error: error.response?.data?.error || "Failed to send message. Try again.",
+        loading: false,
+      });
+    }
   };
 
   return (
@@ -38,9 +60,15 @@ const ContactUs = () => {
           </p>
 
           <div className="space-y-4">
-            <p className="text-gray-700"><span className="font-semibold">Email:</span> info@elmulfurqaan.com</p>
-            <p className="text-gray-700"><span className="font-semibold">Phone:</span> +880 1234 567890</p>
-            <p className="text-gray-700"><span className="font-semibold">Address:</span> Dhaka, Bangladesh</p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Email:</span> elmulfurqaan@gmail.com
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Phone:</span> +880 1234 567890
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Address:</span> Dhaka, Bangladesh
+            </p>
           </div>
         </div>
 
@@ -52,7 +80,7 @@ const ContactUs = () => {
           <input
             type="text"
             name="name"
-            placeholder="Your Name"
+            placeholder="Your Name *"
             value={formData.name}
             onChange={handleChange}
             className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700"
@@ -61,7 +89,7 @@ const ContactUs = () => {
           <input
             type="email"
             name="email"
-            placeholder="Your Email"
+            placeholder="Your Email *"
             value={formData.email}
             onChange={handleChange}
             className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700"
@@ -77,20 +105,33 @@ const ContactUs = () => {
           />
           <textarea
             name="message"
-            placeholder="Your Message"
+            placeholder="Your Message *"
             rows={5}
             value={formData.message}
             onChange={handleChange}
             className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700"
             required
           />
+
           <button
             type="submit"
-            className="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-800 transition"
+            disabled={status.loading}
+            className={`bg-red-700 text-white px-6 py-3 rounded-lg transition ${
+              status.loading
+                ? "opacity-70 cursor-not-allowed"
+                : "hover:bg-red-800"
+            }`}
           >
-            Send Message
+            {status.loading ? "Sending..." : "Send Message"}
           </button>
-          {success && <p className="text-green-600 mt-2">{success}</p>}
+
+          {/* Success or Error Message */}
+          {status.success && (
+            <p className="text-green-600 font-medium mt-2">{status.success}</p>
+          )}
+          {status.error && (
+            <p className="text-red-600 font-medium mt-2">{status.error}</p>
+          )}
         </form>
       </div>
     </section>

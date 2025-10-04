@@ -143,6 +143,15 @@ const AddBlog = () => {
     navigate(-1); // Adjust route as needed
   };
 
+  // Handle key down for textarea to ensure Enter creates line break (prevents form submit)
+// Handle key down for textarea (allow Enter to add new line safely)
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.stopPropagation(); // prevent bubbling up to form
+  }
+};
+
+
   return (
     <div className="p-4 sm:p-6 max-w-4xl mx-auto min-h-screen">
       <div className="flex items-center justify-between mb-8">
@@ -158,7 +167,17 @@ const AddBlog = () => {
         </h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg space-y-6">
+      <form
+  onSubmit={handleSubmit}
+  onKeyDown={(e) => {
+    // Prevent Enter key from submitting form unless user presses Ctrl+Enter
+    if (e.key === 'Enter' && e.target.tagName === 'TEXTAREA' && !e.ctrlKey) {
+      e.stopPropagation();
+    }
+  }}
+  className="bg-white p-6 rounded-xl shadow-lg space-y-6"
+>
+
         {/* Thumbnail Image */}
         <div>
           <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-2">
@@ -216,6 +235,7 @@ const AddBlog = () => {
             name="description"
             value={formData.description}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown} // Ensures consistent Enter behavior
             className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
               formErrors.description ? "border-red-500" : "border-gray-300"
             }`}
@@ -226,7 +246,7 @@ const AddBlog = () => {
             <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
           )}
           <p className="mt-1 text-xs text-gray-500">
-            Tip: Use simple markdown like **bold**, *italic*, - bullet points for formatting.
+            Tip: Use simple markdown like **bold**, *italic*, - bullet points for formatting. Press Enter for line breaks.
           </p>
         </div>
 

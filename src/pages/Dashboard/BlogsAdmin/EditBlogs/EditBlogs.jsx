@@ -196,7 +196,16 @@ const EditBlogs = () => {
         </h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg space-y-6">
+            <form
+  onSubmit={handleSubmit}
+  onKeyDown={(e) => {
+    // Prevent Enter key from submitting form unless user presses Ctrl+Enter
+    if (e.key === 'Enter' && e.target.tagName === 'TEXTAREA' && !e.ctrlKey) {
+      e.stopPropagation();
+    }
+  }}
+  className="bg-white p-6 rounded-xl shadow-lg space-y-6"
+>
         {/* Thumbnail Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

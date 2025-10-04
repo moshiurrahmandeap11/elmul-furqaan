@@ -12,6 +12,8 @@ import {
   ChevronRight,
   LogOut,
   User,
+  Contact,
+  SubscriptIcon,
 } from "lucide-react";
 import SystemSettings from "./SystemSettings/SystemSettings";
 import BannerAdmin from "./HomeAdmin/BannerAdmin/BannerAdmin";
@@ -20,6 +22,8 @@ import BlogsAdmin from "./BlogsAdmin/BlogsAdmin";
 import VideosAdmin from "./VideosAdmin/VideosAdmin";
 import AboutUsAdmin from "./AboutUsAdmin/AboutUsAdmin";
 import QnaAdmin from "./QnaAdmin/QnaAdmin";
+import ContactAdmin from "./ContactAdmin/ContactAdmin";
+import Subscribers from "./Subscribers/Subscribers";
 
 // ---------------- Pages ----------------
 const HomePage = () => (
@@ -88,6 +92,8 @@ const menuItems = [
   { id: "videos", label: "Videos", icon: Video, component: VideosPage },
   { id: "about", label: "About Us", icon: Info, component: AboutPage },
   { id: "qna", label: "QNA", icon: MessageCircle, component: QNAPage },
+  { id: "contact", label: "Contact Info", icon: Contact, component: ContactAdmin},
+  { id: "subscribers", label: "Subscribers", icon: SubscriptIcon, component: Subscribers},
   {
     id: "system-settings",
     label: "System Settings",
@@ -100,45 +106,50 @@ const menuItems = [
 const Dashboard = () => {
   // Load saved state from localStorage or use defaults
   const [activePage, setActivePage] = useState(() => {
-    return localStorage.getItem('dashboardActivePage') || 'home';
+    return localStorage.getItem("dashboardActivePage") || "home";
   });
-  
+
   const [sidebarOpen, setSidebarOpen] = useState(() => {
-    const saved = localStorage.getItem('dashboardSidebarOpen');
+    const saved = localStorage.getItem("dashboardSidebarOpen");
     return saved !== null ? JSON.parse(saved) : true;
   });
-  
+
   const [expandedMenus, setExpandedMenus] = useState(() => {
-    const saved = localStorage.getItem('dashboardExpandedMenus');
+    const saved = localStorage.getItem("dashboardExpandedMenus");
     return saved ? JSON.parse(saved) : {};
   });
-  
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Save active page to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('dashboardActivePage', activePage);
+    localStorage.setItem("dashboardActivePage", activePage);
   }, [activePage]);
 
   // Save sidebar state to localStorage
   useEffect(() => {
-    localStorage.setItem('dashboardSidebarOpen', JSON.stringify(sidebarOpen));
+    localStorage.setItem("dashboardSidebarOpen", JSON.stringify(sidebarOpen));
   }, [sidebarOpen]);
 
   // Save expanded menus to localStorage
   useEffect(() => {
-    localStorage.setItem('dashboardExpandedMenus', JSON.stringify(expandedMenus));
+    localStorage.setItem(
+      "dashboardExpandedMenus",
+      JSON.stringify(expandedMenus)
+    );
   }, [expandedMenus]);
 
   // Auto-expand parent menu if active page is a sub-item
   useEffect(() => {
-    menuItems.forEach(item => {
+    menuItems.forEach((item) => {
       if (item.subItems) {
-        const isSubItemActive = item.subItems.some(sub => sub.id === activePage);
+        const isSubItemActive = item.subItems.some(
+          (sub) => sub.id === activePage
+        );
         if (isSubItemActive && !expandedMenus[item.id]) {
-          setExpandedMenus(prev => ({
+          setExpandedMenus((prev) => ({
             ...prev,
-            [item.id]: true
+            [item.id]: true,
           }));
         }
       }
@@ -182,10 +193,10 @@ const Dashboard = () => {
     );
   };
 
-const handleLogout = () => {
-  localStorage.removeItem('adminAuth');
-  window.location.href = '/dashboard'; // This will trigger login screen
-};
+  const handleLogout = () => {
+    localStorage.removeItem("adminAuth");
+    window.location.href = "/dashboard"; // This will trigger login screen
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -279,13 +290,13 @@ const handleLogout = () => {
                 <p className="text-xs text-gray-500">admin@example.com</p>
               </div>
             </div>
-<button 
-  onClick={handleLogout}
-  className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
->
-  <LogOut size={16} />
-  <span>Logout</span>
-</button>
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            >
+              <LogOut size={16} />
+              <span>Logout</span>
+            </button>
           </div>
         )}
       </aside>
@@ -379,7 +390,7 @@ const handleLogout = () => {
                   <p className="text-xs text-gray-500">admin@example.com</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={handleLogout}
                 className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               >
