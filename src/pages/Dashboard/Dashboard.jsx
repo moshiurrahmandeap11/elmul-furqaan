@@ -18,6 +18,8 @@ import BannerAdmin from "./HomeAdmin/BannerAdmin/BannerAdmin";
 import BannerTextAdmin from "./HomeAdmin/BannerAdmin/BannerTextAdmin/BannerTextAdmin";
 import BlogsAdmin from "./BlogsAdmin/BlogsAdmin";
 import VideosAdmin from "./VideosAdmin/VideosAdmin";
+import AboutUsAdmin from "./AboutUsAdmin/AboutUsAdmin";
+import QnaAdmin from "./QnaAdmin/QnaAdmin";
 
 // ---------------- Pages ----------------
 const HomePage = () => (
@@ -54,15 +56,13 @@ const VideosPage = () => (
 
 const AboutPage = () => (
   <div className="p-8">
-    <h1 className="text-3xl font-bold mb-4">About Us</h1>
-    <p className="text-gray-600">Information about the organization.</p>
+    <AboutUsAdmin></AboutUsAdmin>
   </div>
 );
 
 const QNAPage = () => (
   <div className="p-8">
-    <h1 className="text-3xl font-bold mb-4">QNA</h1>
-    <p className="text-gray-600">Answer user questions here.</p>
+    <QnaAdmin></QnaAdmin>
   </div>
 );
 
