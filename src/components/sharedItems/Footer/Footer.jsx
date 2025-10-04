@@ -95,8 +95,8 @@ const Footer = () => {
         {/* Contact + Social */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-3">Contact Us</h3>
-          <p className="text-sm">Email: info@elmulfurqaan.com</p>
-          <p className="text-sm mb-3">Phone: +880 1234-567890</p>
+          <p className="text-sm">Email: elmulfurqaan@gmail.com</p>
+          <p className="text-sm mb-3">Phone: +966 50 373 9142</p>
           <div className="flex space-x-4 mt-2">
             <a
               href="https://facebook.com"

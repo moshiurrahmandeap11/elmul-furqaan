@@ -64,10 +64,7 @@ const ContactUs = () => {
               <span className="font-semibold">Email:</span> elmulfurqaan@gmail.com
             </p>
             <p className="text-gray-700">
-              <span className="font-semibold">Phone:</span> +880 1234 567890
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Address:</span> Dhaka, Bangladesh
+              <span className="font-semibold">Phone:</span> +966 50 373 9142
             </p>
           </div>
         </div>
