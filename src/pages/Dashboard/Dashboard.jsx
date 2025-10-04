@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Home,
   FileText,
@@ -98,10 +98,52 @@ const menuItems = [
 
 // ---------------- Main Dashboard ----------------
 const Dashboard = () => {
-  const [activePage, setActivePage] = useState("home");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [expandedMenus, setExpandedMenus] = useState({});
+  // Load saved state from localStorage or use defaults
+  const [activePage, setActivePage] = useState(() => {
+    return localStorage.getItem('dashboardActivePage') || 'home';
+  });
+  
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem('dashboardSidebarOpen');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+  
+  const [expandedMenus, setExpandedMenus] = useState(() => {
+    const saved = localStorage.getItem('dashboardExpandedMenus');
+    return saved ? JSON.parse(saved) : {};
+  });
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Save active page to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('dashboardActivePage', activePage);
+  }, [activePage]);
+
+  // Save sidebar state to localStorage
+  useEffect(() => {
+    localStorage.setItem('dashboardSidebarOpen', JSON.stringify(sidebarOpen));
+  }, [sidebarOpen]);
+
+  // Save expanded menus to localStorage
+  useEffect(() => {
+    localStorage.setItem('dashboardExpandedMenus', JSON.stringify(expandedMenus));
+  }, [expandedMenus]);
+
+  // Auto-expand parent menu if active page is a sub-item
+  useEffect(() => {
+    menuItems.forEach(item => {
+      if (item.subItems) {
+        const isSubItemActive = item.subItems.some(sub => sub.id === activePage);
+        if (isSubItemActive && !expandedMenus[item.id]) {
+          setExpandedMenus(prev => ({
+            ...prev,
+            [item.id]: true
+          }));
+        }
+      }
+    });
+  }, [activePage]);
 
   const ActiveComponent =
     menuItems
@@ -138,6 +180,14 @@ const Dashboard = () => {
     return (
       allItems.find((item) => item.id === activePage)?.label || "Dashboard"
     );
+  };
+
+  const handleLogout = () => {
+    // Clear saved states on logout
+    localStorage.removeItem('dashboardActivePage');
+    localStorage.removeItem('dashboardSidebarOpen');
+    localStorage.removeItem('dashboardExpandedMenus');
+    // Add your logout logic here
   };
 
   return (
@@ -232,7 +282,10 @@ const Dashboard = () => {
                 <p className="text-xs text-gray-500">admin@example.com</p>
               </div>
             </div>
-            <button className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            >
               <LogOut size={16} />
               <span>Logout</span>
             </button>
@@ -329,7 +382,10 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-500">admin@example.com</p>
                 </div>
               </div>
-              <button className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+              <button 
+                onClick={handleLogout}
+                className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              >
                 <LogOut size={16} />
                 <span>Logout</span>
               </button>
