@@ -131,6 +131,9 @@ const Navbar = () => {
           <Link to="/about" className="block hover:text-red-700">
             About Us
           </Link>
+          <Link to="/questions" className="block hover:text-red-700">
+            Q & A
+          </Link>
           <Link
             to="/contact"
             className="block bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition text-center"
