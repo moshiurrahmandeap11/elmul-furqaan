@@ -107,15 +107,7 @@ const Footer = () => {
               <Facebook size={20} />
             </a>
             <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-red-700"
-            >
-              <Twitter size={20} />
-            </a>
-            <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/wakil.al?igsh=bzZ1emlwbDF3MTVk"
               target="_blank"
               rel="noreferrer"
               className="hover:text-red-700"
@@ -123,7 +115,7 @@ const Footer = () => {
               <Instagram size={20} />
             </a>
             <a
-              href="mailto:info@elmulfurqaan.com"
+              href="mailto:elmulfurqaan@gmail.com"
               className="hover:text-red-700"
             >
               <Mail size={20} />

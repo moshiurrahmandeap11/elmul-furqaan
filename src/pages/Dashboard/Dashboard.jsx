@@ -90,10 +90,8 @@ const menuItems = [
   },
   { id: "blogs", label: "Blogs", icon: FileText, component: BlogsAdmin },
   { id: "videos", label: "Videos", icon: Video, component: VideosPage },
-  { id: "about", label: "About Us", icon: Info, component: AboutPage },
   { id: "qna", label: "QNA", icon: MessageCircle, component: QNAPage },
   { id: "contact", label: "Contact Info", icon: Contact, component: ContactAdmin},
-  { id: "subscribers", label: "Subscribers", icon: SubscriptIcon, component: Subscribers},
   {
     id: "system-settings",
     label: "System Settings",

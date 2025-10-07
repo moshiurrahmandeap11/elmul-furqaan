@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router";
 import { ChevronLeft, Calendar, Tag, Share2, Clock, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import axiosInstance from "../../../hooks/axiosIntance/AxiosIntance";
+import { FaEnvelope, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const BlogsDetails = () => {
   const { id } = useParams();
@@ -194,33 +196,40 @@ const BlogsDetails = () => {
 
         {/* Floating Share Card */}
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-3xl blur-xl opacity-50"></div>
-          <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white rounded-3xl p-8 shadow-2xl">
+          <div className="absolute inset-0 bg-gray-50 rounded-3xl blur-xl opacity-50"></div>
+          <div className="relative bg-gray-50 text-black rounded-3xl p-8 shadow-2xl">
             <div className="flex flex-col items-center text-center gap-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/20 rounded-full">
                   <Share2 className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold">Love this article?</h3>
-                  <p className="text-white/80 text-sm">Share it with your friends!</p>
+                  <h3 className="text-2xl  font-bold">Love this article?</h3>
+                  <p className="text-black text-sm">Share it with your friends!</p>
                 </div>
               </div>
               
-              <div className="flex gap-3">
-                <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
-                  <span className="text-2xl group-hover:scale-125 inline-block transition-transform duration-300">📘</span>
-                </button>
-                <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
-                  <span className="text-2xl group-hover:scale-125 inline-block transition-transform duration-300">🐦</span>
-                </button>
-                <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
-                  <span className="text-2xl group-hover:scale-125 inline-block transition-transform duration-300">💬</span>
-                </button>
-                <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
-                  <span className="text-2xl group-hover:scale-125 inline-block transition-transform duration-300">📧</span>
-                </button>
-              </div>
+      <div className="flex gap-3">
+        {/* Facebook */}
+        <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-[#1877F2]/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
+          <FaFacebookF className="text-[#1877F2] text-2xl group-hover:scale-125 transition-transform duration-300" />
+        </button>
+
+        {/* Twitter/X */}
+        <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-black/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
+          <FaXTwitter className="text-black text-2xl group-hover:scale-125 transition-transform duration-300" />
+        </button>
+
+        {/* LinkedIn */}
+        <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-[#0A66C2]/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
+          <FaLinkedinIn className="text-[#0A66C2] text-2xl group-hover:scale-125 transition-transform duration-300" />
+        </button>
+
+        {/* Email */}
+        <button className="group p-4 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-red-500/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110">
+          <FaEnvelope className="text-red-500 text-2xl group-hover:scale-125 transition-transform duration-300" />
+        </button>
+      </div>
             </div>
           </div>
         </div>
