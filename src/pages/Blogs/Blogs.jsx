@@ -80,7 +80,7 @@ const Blogs = () => {
     <section className="max-w-7xl mx-auto px-6 py-12">
       {/* Page Title */}
       <h1 className="text-3xl font-bold text-center text-red-700 mb-10">
-        Latest Blogs
+        Islamic Content
       </h1>
 
       {/* Blog Cards */}

@@ -135,7 +135,7 @@ const Footer = () => {
       {/* Bottom */}
       <div className="mt-10 border-t border-gray-700 py-4 text-center flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto text-sm text-gray-400 px-4">
         {/* Left Side */}
-        <p>© {new Date().getFullYear()} <span className="font-bold text-white">Elmul Furqaan</span>. All Rights Reserved.</p>
+        <p>© {new Date().getFullYear()} <span className="font-bold text-white">Elmul forqaan</span>. All Rights Reserved.</p>
 
         {/* Right Side */}
         <p>

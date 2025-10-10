@@ -65,8 +65,8 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-8">
             {[
               { path: "/", label: "Home" },
-              { path: "/blogs", label: "Blogs" },
-              { path: "/videos", label: "Videos" },
+              { path: "/blogs", label: "Islamic Content" },
+              { path: "/videos", label: "Islamic Video" },
               { path: "/about", label: "About Us" },
               { path: "/questions", label: "QNA" },
             ].map((item, idx) => (
@@ -85,7 +85,7 @@ const Navbar = () => {
                 {item.label}
                 <span
                   className={`
-          absolute left-1/4 -bottom-1 h-0.5 bg-red-700 transition-all duration-300 
+          absolute  
           ${
             window.location.pathname === item.path
               ? "w-1/2"

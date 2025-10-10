@@ -80,7 +80,7 @@ const Videos = () => {
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold text-red-700 mb-10 text-center">
-        Latest Videos
+         Islamic Videos
       </h1>
 
       {/* Video Grid */}

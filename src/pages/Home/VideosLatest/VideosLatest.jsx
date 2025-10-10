@@ -62,7 +62,7 @@ const VideosLatest = () => {
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
       <h2 className="text-3xl font-bold text-red-700 mb-8 text-center">
-        Latest Videos
+         Islamic Videos
       </h2>
 
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
