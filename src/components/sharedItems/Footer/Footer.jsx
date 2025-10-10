@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import { Facebook, Twitter, Instagram, Mail, Youtube } from "lucide-react";
 import axiosInstance from "../../../hooks/axiosIntance/AxiosIntance";
 
 
@@ -107,6 +107,14 @@ const Footer = () => {
               <Facebook size={20} />
             </a>
             <a
+              href="https://www.youtube.com/channel/UCRhSMjnn-tlCheU5ljrBJIw"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-red-700"
+            >
+              <Youtube size={20} />
+            </a>
+            <a
               href="https://www.instagram.com/wakil.al?igsh=bzZ1emlwbDF3MTVk"
               target="_blank"
               rel="noreferrer"
@@ -132,16 +140,6 @@ const Footer = () => {
         {/* Right Side */}
         <p>
           Developed By{" "}
-          <a
-            href="https://moshiurrahman.online"
-            target="_blank"
-            rel="noreferrer"
-            className="text-red-600 hover:text-red-700 font-medium relative group"
-          >
-            Moshiur Rahman
-            <span className="absolute left-0 -bottom-0.5 w-0 h-0.5 bg-red-700 transition-all group-hover:w-full"></span>
-          </a>{" "}
-          via{" "}
           <a
             href="https://projuktisheba.com"
             target="_blank"
