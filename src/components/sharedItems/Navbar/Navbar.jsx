@@ -67,8 +67,8 @@ const Navbar = () => {
               { path: "/", label: "Home" },
               { path: "/blogs", label: "Islamic Content" },
               { path: "/videos", label: "Islamic Video" },
-              { path: "/about", label: "About Us" },
               { path: "/questions", label: "QNA" },
+              { path: "/about", label: "About Us" },
             ].map((item, idx) => (
               <NavLink
                 key={idx}
