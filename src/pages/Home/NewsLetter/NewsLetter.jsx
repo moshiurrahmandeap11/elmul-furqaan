@@ -15,7 +15,7 @@ const NewsLetter = () => {
   };
 
   return (
-    <section className="bg-gray-50 py-16 px-6">
+    <section className=" py-16 px-6">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-red-700 mb-4">
           Subscribe to our Newsletter

@@ -113,14 +113,14 @@ const QNA = ({ user }) => { // user prop for logged-in info (optional)
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12 bg-gradient-to-b from-gray-50 to-white">
+    <section className="max-w-7xl mx-auto px-6 py-12 ">
       {/* Section title */}
       <h2 className="text-4xl font-bold text-red-700 text-center mb-12">
         Q & A Section
       </h2>
 
       {/* Ask Question Form */}
-      <form onSubmit={handleSubmit} className="mb-12 max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6">
+      <form onSubmit={handleSubmit} className="mb-12 max-w-3xl mx-auto  rounded-xl shadow-lg p-6">
         <div className="flex items-start gap-4">
           <img
             src={user?.avatar || "https://ui-avatars.com/api/?name=Anonymous&background=ddd&color=555"}
@@ -159,7 +159,7 @@ const QNA = ({ user }) => { // user prop for logged-in info (optional)
         {currentQuestions.map((q) => (
           <div
             key={q._id}
-            className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+            className="bg-white/40 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
           >
             {/* Question */}
             <div className="p-6 border-b border-gray-100">
@@ -181,7 +181,7 @@ const QNA = ({ user }) => { // user prop for logged-in info (optional)
 
             {/* Reply (if exists) */}
             {q.answer && (
-              <div className="bg-gradient-to-r from-red-50 to-red-100 p-6">
+              <div className=" p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 bg-red-700 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white font-semibold text-sm">A</span>
