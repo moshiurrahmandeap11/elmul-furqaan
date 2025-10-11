@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { Menu, X, Search, X as CloseIcon } from "lucide-react";
 import axiosInstance from "../../../hooks/axiosIntance/AxiosIntance";
@@ -11,10 +11,39 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
+  const searchRef = useRef(null);
+  const suggestionsRef = useRef(null);
+
+  // Popular search suggestions
+  const popularSearches = [
+    "Quran", "Hadith", "Prayer", "Islamic History", "Fiqh", 
+    "Prophet Muhammad", "Salah", "Zakat", "Hajj", "Ramadan"
+  ];
 
   useEffect(() => {
     fetchLogo();
+  }, []);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchRef.current && 
+        !searchRef.current.contains(event.target) &&
+        suggestionsRef.current && 
+        !suggestionsRef.current.contains(event.target)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const fetchLogo = async () => {
@@ -29,25 +58,44 @@ const Navbar = () => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchTerm.trim()) return;
+  // Fetch suggestions when typing
+  useEffect(() => {
+    if (searchTerm.length > 1) {
+      const filtered = popularSearches.filter(item =>
+        item.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      
+      if (searchTerm && !popularSearches.includes(searchTerm)) {
+        filtered.unshift(searchTerm);
+      }
+      
+      setSuggestions(filtered.slice(0, 4));
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [searchTerm]);
+
+  const handleSearch = async (e, term = searchTerm) => {
+    e?.preventDefault();
+    if (!term.trim()) return;
 
     setSearchLoading(true);
     try {
-      const response = await axiosInstance.get(`/search?q=${encodeURIComponent(searchTerm)}`);
+      const response = await axiosInstance.get(`/search?q=${encodeURIComponent(term)}`);
       setSearchResults(response.data);
+      setShowSuggestions(false);
       
-      // সার্চ রেজাল্ট পেজে নেভিগেট করুন
       navigate('/search', { 
         state: { 
           searchData: response.data,
-          searchTerm: searchTerm 
+          searchTerm: term 
         } 
       });
       
-      setSearchOpen(false);
       setSearchTerm("");
+      setSearchOpen(false);
     } catch (error) {
       console.error("Search error:", error);
     } finally {
@@ -55,9 +103,25 @@ const Navbar = () => {
     }
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion);
+    setShowSuggestions(false);
+    handleSearch(null, suggestion);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleInputFocus = () => {
+    if (searchTerm.length > 1) {
+      setShowSuggestions(true);
+    }
+  };
+
   const quickSearch = (term) => {
     setSearchTerm(term);
-    // অটো সার্চ ট্রিগার করতে চাইলে এখান থেকে handleSearch কল করতে পারেন
+    handleSearch(null, term);
   };
 
   const renderLogo = () => {
@@ -95,50 +159,93 @@ const Navbar = () => {
             {renderLogo()}
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8 items-center">
-            {[
-              { path: "/", label: "Home" },
-              { path: "/blogs", label: "Islamic Content" },
-              { path: "/videos", label: "Islamic Video" },
-              { path: "/questions", label: "QNA" },
-              { path: "/about", label: "About Us" },
-            ].map((item, idx) => (
-              <NavLink
-                key={idx}
-                to={item.path}
-                end
-                className={({ isActive }) =>
-                  `relative font-medium transition-colors duration-200 group ${
-                    isActive
-                      ? "text-red-700"
-                      : "text-gray-700 hover:text-red-700"
-                  }`
-                }
-              >
-                {item.label}
-                <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-red-700 transition-all duration-200 ${
-                    window.location.pathname === item.path
-                      ? "w-full"
-                      : "w-0 group-hover:w-full"
-                  }`}
-                ></span>
-              </NavLink>
-            ))}
+          {/* Desktop Menu with Search */}
+          <div className="hidden md:flex space-x-8 items-center flex-1 max-w-3xl mx-8">
+            {/* Navigation Links */}
+            <div className="flex space-x-8">
+              {[
+                { path: "/", label: "Home" },
+                { path: "/blogs", label: "Islamic Content" },
+                { path: "/videos", label: "Islamic Video" },
+                { path: "/questions", label: "QNA" },
+                { path: "/about", label: "About Us" },
+              ].map((item, idx) => (
+                <NavLink
+                  key={idx}
+                  to={item.path}
+                  end
+                  className={({ isActive }) =>
+                    `relative font-medium transition-colors duration-200 group ${
+                      isActive
+                        ? "text-red-700"
+                        : "text-gray-700 hover:text-red-700"
+                    }`
+                  }
+                >
+                  {item.label}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-red-700 transition-all duration-200 ${
+                      window.location.pathname === item.path
+                        ? "w-full"
+                        : "w-0 group-hover:w-full"
+                    }`}
+                  ></span>
+                </NavLink>
+              ))}
+            </div>
+
+            {/* Search Bar - Now on the right side of navigation */}
+            <div className="relative flex-1 max-w-xs ml-8" ref={searchRef}>
+              <form onSubmit={handleSearch} className="relative">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    placeholder="Search..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-gray-50"
+                  />
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchTerm("");
+                        setShowSuggestions(false);
+                      }}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Suggestions Dropdown */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div 
+                    ref={suggestionsRef}
+                    className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 z-50 max-h-60 overflow-y-auto"
+                  >
+                    {suggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="w-full text-left px-4 py-3 hover:bg-red-50 border-b border-gray-200 last:border-b-0 transition-colors duration-200 flex items-center text-sm text-gray-700 hover:text-red-700"
+                      >
+                        <Search className="h-3 w-3 text-gray-400 mr-3" />
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </form>
+            </div>
           </div>
 
           {/* Desktop Right Section */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Search Button */}
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="p-2 text-gray-600 hover:text-red-700 transition-colors duration-200"
-              aria-label="Search"
-            >
-              <Search className="h-5 w-5" />
-            </button>
-
             {/* Contact Us Button */}
             <Link
               to="/contact"
@@ -198,9 +305,9 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Search Overlay */}
+      {/* Search Overlay for Mobile */}
       {searchOpen && (
-        <div className="fixed inset-0 bg-black/30 bg-opacity-50 z-50 flex items-start justify-center pt-20 px-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-20 px-4 md:hidden">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl animate-fade-in">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-lg font-semibold text-gray-800">Search</h3>
@@ -231,7 +338,7 @@ const Navbar = () => {
               
               {/* Quick Search Suggestions */}
               <div className="mt-4 flex flex-wrap gap-2">
-                {["Quran", "Hadith", "Prayer", "Islamic History", "Fiqh"].map((term) => (
+                {popularSearches.slice(0, 5).map((term) => (
                   <button
                     key={term}
                     type="button"
