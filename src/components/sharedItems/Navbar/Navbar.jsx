@@ -194,31 +194,40 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Search Bar - Now on the right side of navigation */}
+            {/* Search Bar - Desktop */}
             <div className="relative flex-1 max-w-xs ml-8" ref={searchRef}>
               <form onSubmit={handleSearch} className="relative">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
-                    placeholder="Search..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-gray-50"
-                  />
-                  {searchTerm && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSearchTerm("");
-                        setShowSuggestions(false);
-                      }}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  <div className="flex items-center gap-2">
+                    <div className="relative flex-1">
+                      <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                        placeholder="Search..."
+                        className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-gray-50"
+                      />
+                      {searchTerm && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSearchTerm("");
+                            setShowSuggestions(false);
+                          }}
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                    <button 
+                      type="submit"
+                      className="text-gray-400 hover:text-red-700 flex-shrink-0"
                     >
-                      <X className="h-4 w-4" />
+                      <Search className="h-4 w-4" />
                     </button>
-                  )}
+                  </div>
                 </div>
 
                 {/* Suggestions Dropdown */}
@@ -244,6 +253,56 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Mobile Search Bar - Visible on small screens */}
+          <div className="md:hidden flex-1 max-w-xs mx-4" ref={searchRef}>
+            <form onSubmit={handleSearch} className="relative">
+              <div className="relative">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    placeholder="Search..."
+                    className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-gray-50"
+                  />
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchTerm("");
+                        setShowSuggestions(false);
+                      }}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Suggestions Dropdown for Mobile */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div 
+                  ref={suggestionsRef}
+                  className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 z-50 max-h-60 overflow-y-auto"
+                >
+                  {suggestions.map((suggestion, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="w-full text-left px-4 py-3 hover:bg-red-50 border-b border-gray-200 last:border-b-0 transition-colors duration-200 flex items-center text-sm text-gray-700 hover:text-red-700"
+                    >
+                      <Search className="h-3 w-3 text-gray-400 mr-3" />
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </form>
+          </div>
+
           {/* Desktop Right Section */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Contact Us Button */}
@@ -257,15 +316,6 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
-            {/* Mobile Search Button */}
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="p-2 text-gray-600 hover:text-red-700 transition-colors duration-200"
-              aria-label="Search"
-            >
-              <Search className="h-5 w-5" />
-            </button>
-
             <button 
               onClick={() => setOpen(!open)}
               className="p-2 text-gray-600 hover:text-red-700 transition-colors duration-200"
@@ -302,63 +352,6 @@ const Navbar = () => {
           >
             Contact Us
           </Link>
-        </div>
-      )}
-
-      {/* Search Overlay for Mobile */}
-      {searchOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-20 px-4 md:hidden">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl animate-fade-in">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold text-gray-800">Search</h3>
-              <button
-                onClick={() => {
-                  setSearchOpen(false);
-                  setSearchTerm("");
-                  setSearchResults(null);
-                }}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200"
-              >
-                <CloseIcon className="h-5 w-5 text-gray-600" />
-              </button>
-            </div>
-            
-            <form onSubmit={handleSearch} className="p-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search blogs, videos, Q&A..."
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all duration-200"
-                  autoFocus
-                />
-              </div>
-              
-              {/* Quick Search Suggestions */}
-              <div className="mt-4 flex flex-wrap gap-2">
-                {popularSearches.slice(0, 5).map((term) => (
-                  <button
-                    key={term}
-                    type="button"
-                    onClick={() => quickSearch(term)}
-                    className="px-3 py-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 rounded-full text-sm transition-colors duration-200"
-                  >
-                    {term}
-                  </button>
-                ))}
-              </div>
-
-              <button
-                type="submit"
-                disabled={searchLoading || !searchTerm.trim()}
-                className="w-full mt-4 bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
-              >
-                {searchLoading ? "Searching..." : "Search"}
-              </button>
-            </form>
-          </div>
         </div>
       )}
     </nav>
