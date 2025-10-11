@@ -8,7 +8,7 @@ const AboutUs = () => {
       type: 'hero',
       data: {
         title: 'About Us',
-        description: 'Elmul Furqaan is dedicated to spreading authentic Islamic knowledge through blogs, videos, and educational resources. Our mission is to guide people with clarity, wisdom, and modern presentation.'
+        description: 'Elmul Furqan is dedicated to spreading authentic Islamic knowledge through blogs, videos, and educational resources. Our mission is to guide people with clarity, wisdom, and modern presentation.'
       }
     },
     {

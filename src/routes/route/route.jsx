@@ -14,6 +14,8 @@ import EditBlogs from "../../pages/Dashboard/BlogsAdmin/EditBlogs/EditBlogs";
 import AddVideos from "../../pages/Dashboard/VideosAdmin/AddVideos/AddVideos";
 import EditVideos from "../../pages/Dashboard/VideosAdmin/EditVideos/EditVideos";
 import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
+import SearchResults from "../../components/sharedItems/Navbar/SearchResults/SearchResults";
+import VideoDetails from "../../pages/Videos/VideosAdmin/VideosDetails";
 
 
 export const router = createBrowserRouter([
@@ -38,6 +40,11 @@ export const router = createBrowserRouter([
         element: <Videos></Videos>
       },
       {
+
+        path: "/videos/:id",
+        element: <VideoDetails></VideoDetails>
+      },
+      {
         path: "/about",
         element: <AboutUs></AboutUs>
       },
@@ -48,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactUs></ContactUs>
+      },
+      {
+        path: "/search",
+        element: <SearchResults></SearchResults>
       }
     ],
   },

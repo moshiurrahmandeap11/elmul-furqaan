@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../hooks/axiosIntance/AxiosIntance";
+import { useNavigate } from "react-router";
 
 
 const Videos = () => {
@@ -8,6 +9,7 @@ const Videos = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const videosPerPage = 6;
+  const navigate = useNavigate();
 
   // Fetch videos from backend
   useEffect(() => {
@@ -100,7 +102,7 @@ const Videos = () => {
                 allowFullScreen
               ></iframe>
             </div>
-            <div className="p-5">
+            <div onClick={() => navigate(`${video._id}`)} className="p-5">
               <h2 className="text-lg font-semibold text-gray-800 mb-2">
                 {video.title}
               </h2>

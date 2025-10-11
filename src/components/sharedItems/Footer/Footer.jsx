@@ -51,6 +51,17 @@ const Footer = () => {
     return <span className="text-2xl font-bold text-red-700">Elmul Furqaan</span>;
   };
 
+  const handleEmailClick = (e) => {
+  // Check if it's a mobile device
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
+  if (!isMobile) {
+    e.preventDefault();
+    window.open('mailto:elmulfurqaan@gmail.com', '_blank');
+  }
+  // Mobile devices will use default behavior
+};
+
   return (
     <footer className="bg-gray-900 text-gray-300 pt-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
@@ -124,6 +135,8 @@ const Footer = () => {
             </a>
             <a
               href="mailto:elmulfurqaan@gmail.com"
+              target="_blank"
+              onClick={handleEmailClick}
               className="hover:text-red-700"
             >
               <Mail size={20} />
@@ -135,7 +148,7 @@ const Footer = () => {
       {/* Bottom */}
       <div className="mt-10 border-t border-gray-700 py-4 text-center flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto text-sm text-gray-400 px-4">
         {/* Left Side */}
-        <p>© {new Date().getFullYear()} <span className="font-bold text-white">Elmul forqaan</span>. All Rights Reserved.</p>
+        <p>© {new Date().getFullYear()} <span className="font-bold text-white">Elmul Furqan</span>. All Rights Reserved.</p>
 
         {/* Right Side */}
         <p>

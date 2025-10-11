@@ -85,7 +85,7 @@ const Hero = () => {
             currentBanner.heading.split("\n").map((line, index) => (
               <span
                 key={index}
-                className={`block ${index === 0 ? "text-green-300" : ""}`}
+                className={`block ${index === 0 ? "text-white" : ""}`}
               >
                 {line}
               </span>
